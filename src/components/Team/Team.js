@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React from "react"; 
 
 function Team(props) {
     let shotPercentageDiv
@@ -34,9 +34,9 @@ function Team(props) {
         <button onClick={props.shotHandler}>Shoot!</button>
       </div>
     )
-  };
+  }
 
-  export default Team;
 
+export default Team;
 
   

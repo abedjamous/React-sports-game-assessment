@@ -1,43 +1,99 @@
-import React from 'react';
+import React, { Component } from 'react'; 
+import Team from '../Team/Team';
+import ScoreBoard from '../Score/Score';
+import ScoreAudio from '../Assets/audio/smb_1-up.wav';
+import shotAudio from '../Assets/audio/smb_fireball.wav'
 
-
-function App(props) {
-    const raccoons = {
-      name: 'Russiaville Raccoons',
-      logoSrc: './components/assets/images/raccoon.png'
+class Game extends Component {
+    constructor(props) {
+      super(props)
+  
+      this.state = {
+        resetCount: 0,
+        homeTeamStats: {
+          shots: 0,
+          score: 0
+        },
+        visitingTeamStats: {
+          shots: 0,
+          score: 0
+        }
+      }
+  
+      this.shotSound = new Audio(shotAudio)
+      this.scoreSound = new Audio(ScoreAudio)
     }
   
-    const squirrels = {
-      name: 'Sheridan Squirrels',
-      logoSrc: './components/assets/images/squirrel.png'
+    shoot = (team) => {
+      const teamStatsKey = `${team}TeamStats`
+      let score = this.state[teamStatsKey].score
+      this.shotSound.play()
+  
+      if (Math.random() > 0.5) {
+        score += 1
+  
+        setTimeout(() => {
+          this.scoreSound.play()
+        }, 100)
+      }
+  
+      this.setState((state, props) => ({
+        [teamStatsKey] : {
+          shots: state[teamStatsKey].shots + 1,
+          score
+        }
+      }))
     }
   
-    const bunnies = {
-      name: 'Burlington Bunnies',
-      logoSrc: './components/assets/images/bunny.png'
+    resetGame = () => {
+      this.setState((state, props) => ({
+        resetCount: state.resetCount + 1,
+        homeTeamStats: {
+          shots: 0,
+          score: 0
+        },
+        visitingTeamStats: {
+          shots: 0,
+          score: 0
+        }
+      }))
     }
   
-    const hounds = {
-      name: 'Hammond Hounds',
-      logoSrc: './components/assets/images/hound.png'
+    render() {
+      return (
+        <div className="Game">
+          <ScoreBoard
+            visitingTeamStats={this.state.visitingTeamStats}
+            homeTeamStats={this.state.homeTeamStats}
+          />
+  
+          <h1>Welcome to {this.props.venue}</h1>
+          <div className="stats">
+            <Team
+              name={this.props.visitingTeam.name}
+              logo={this.props.visitingTeam.logoSrc}
+              stats={this.state.visitingTeamStats}
+              shotHandler={() => this.shoot('visiting')}
+            />
+  
+            <div className="versus">
+              <h1>VS</h1>
+              <div>
+                <strong>Resets:</strong> {this.state.resetCount}
+                <button onClick={this.resetGame}>Reset Game</button>
+              </div>
+            </div>
+  
+            <Team
+              name={this.props.homeTeam.name}
+              logo={this.props.homeTeam.logoSrc}
+              stats={this.state.homeTeamStats}
+              shotHandler={() => this.shoot('home')}
+            />
+          </div>
+        </div>
+      )
     }
-    return (
-      <div className="App">
-        <Game
-          venue="Union 525 Gem"
-          homeTeam={squirrels}
-          visitingTeam={raccoons}
-        />
-        <Game
-          venue="Sheridan Arena"
-          homeTeam={bunnies}
-          visitingTeam={hounds}
-        />
-      </div>
-    );
   }
-  
-  export default App;
 
-
-
+export default Game
