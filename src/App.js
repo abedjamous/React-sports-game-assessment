@@ -1,9 +1,9 @@
 import React from 'react';
 import Game from './components/Game/Game.js';
-import Russiaville from './components/Assets/images/raccoon.png';
-import Sheridan from './components/Assets/images/squirrel.png';
-import Burlington from './components/Assets/images/bunny.png';
-import Hammond from './components/Assets/images/hound.png';
+import Russiaville from './components/assets/images/raccoon.png';
+import Sheridan from './components/assets/images/squirrel.png';
+import Burlington from './components/assets/images/bunny.png';
+import Hammond from './components/assets/images/hound.png';
 import './App.css';
 
 
@@ -45,4 +45,6 @@ function App(props) {
 }
 
 export default App;
+
+// update...
 
